@@ -339,8 +339,7 @@
 
                                     <td class="text-center">{{ $loop->iteration }}</td>
                                     <td class="text-center">{{ $row->service }}</td>
-                                    <td class="text-center">
-                                        {{ \Carbon\Carbon::parse($row->created_at)->format('F j, Y, g:i a') }}</td>
+                                    <td class="text-center">{{ date('F j, Y, g:i a', strtotime($row->created_at))}}</td>
                                     <td class="text-center">
                                         {{ \Carbon\Carbon::parse($row->updated_at)->format('F j, Y, g:i a') }}</td>
                                     <td class="text-center py-0 align-middle">

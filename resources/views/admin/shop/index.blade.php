@@ -303,27 +303,46 @@
                             <div class="card-body box-profile">
                                 <div class="text-center">
                                     <img class="profile-user-img img-fluid img-circle"
-                                        src="{{ asset('admin-assets/dist/img/user4-128x128.jpg') }}"
-                                        alt="User profile picture">
+                                        src="{{ URL::asset("storage/images/$userAndShop->logo") }}"
+                                        alt="User profile picture" style="width:120px; height: 120px;">
+                                    <button type="button" class="my-2 btn btn-primary" data-toggle="modal" data-target="#changeImgModal">Change Profile Logo</button>
                                 </div>
 
                                 <h3 class="profile-username text-center">{{ $userAndShop->shop_name }}</h3>
 
                                 <p class="text-muted text-center">My Shop</p>
 
-                                <ul class="list-group list-group-unbordered mb-3">
+                                {{-- <ul class="list-group list-group-unbordered mb-3">
                                     <li class="list-group-item">
-                                        <b>Followers</b> <a class="float-right">1,322</a>
+                                        <b>Current Password:</b> <p><u>{{ $userAndShop->password }}</u></p>
                                     </li>
-                                    <li class="list-group-item">
-                                        <b>Following</b> <a class="float-right">543</a>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <b>Friends</b> <a class="float-right">13,287</a>
-                                    </li>
-                                </ul>
-
-                                <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
+                                    <form  action="{{ route('shops.changePassword', $userAndShop->users_id) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        @if (session('error'))
+                                        <div class="alert alert-danger">
+                                            {{ session('error') }}
+                                        </div>
+                                        @elseif(session('success'))
+                                        <div class="alert alert-success">
+                                            {{ session('success') }}
+                                        </div>
+                                        @endif
+                                        <li class="list-group-item">
+                                            <b>New Password:</b>
+                                            <input type="password" name="new_pass"
+                                                        class="form-control"
+                                                        style="width: 100%;" required>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>Confirm Passsword:</b>
+                                            <input type="password" name="confirm_pass"
+                                            class="form-control"
+                                            style="width: 100%;" required>
+                                        </li>
+                                        <button type="submit" class="mt-2 btn btn-primary">Save changes</button>
+                                    </form>
+                                </ul> --}}
                             </div>
                             <!-- /.card-body -->
                         </div>
@@ -335,7 +354,7 @@
                         <!-- Main row -->
                         <div class="row">
                             <div class="card card-default">
-                                <div class="card-header">
+                                <div class="card-header mt-2">
                                     <h3 class="card-title">List of Shops</h3>
 
                                     <div class="card-tools">
@@ -348,9 +367,13 @@
                                         @csrf
                                         @method('PUT')
 
-                                        @if (session('message'))
-                                            <div class="alert alert-success">
+                                        @if(session('message'))
+                                            <div class="alert alert-success mt-2">
                                                 {{ session('message') }}
+                                            </div>
+                                        @elseif(session('updateImg'))
+                                            <div class="alert alert-success mt-2">
+                                                {{ session('updateImg') }}
                                             </div>
                                         @endif
                                         <div class="card-body">
@@ -446,6 +469,31 @@
         </section>
         <!-- /.content -->
     </div>
+
+                                  <!-- Profile Logo Modal -->
+                                  <div class="modal fade" id="changeImgModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h5 class="modal-title" id="exampleModalLabel">Change Profile Logo</h5>
+                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                          </button>
+                                        </div>
+                                        <form action="{{ route('shops.changeLogo' , $userAndShop->id) }}" method="POST" enctype="multipart/form-data">
+                                            @csrf
+                                            @method('PUT')
+                                            <div class="modal-body">
+                                                    <input type="file" name="logo" accept="image/png, image/gif, image/jpeg" required/>
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                            </div>
+                                        </form>
+                                      </div>
+                                    </div>
+                                  </div>
 @endsection
 @section('js')
     <script>

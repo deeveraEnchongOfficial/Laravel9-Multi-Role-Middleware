@@ -7,10 +7,13 @@ use App\Models\Shops;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Faker\Guesser\Name;
+use App\Notifications\ShopRegistration;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Notification;
 
 class RegisterController extends Controller
 {
@@ -57,6 +60,9 @@ class RegisterController extends Controller
             $user->save();
         }
 
+        Notification::route('mail', $data['email'])
+            ->notify(new ShopRegistration($user));
+
         return $user;
 
         } else {
@@ -72,6 +78,7 @@ class RegisterController extends Controller
     {
         Auth::logout(); // Log out the newly registered user
 
-        return redirect($this->redirectPath());
+        return redirect()
+        ->route("login")->with('success', 'Your Account is created successfully check your gmail for other info.');
     }
 }

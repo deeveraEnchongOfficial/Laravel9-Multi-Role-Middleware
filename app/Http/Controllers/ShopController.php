@@ -7,7 +7,11 @@ use Illuminate\Http\Request;
 use App\Models\Shops;
 use App\Models\User;
 use App\Models\VehicleList;
+use App\Notifications\ShopApproved;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Hash;
 
 class ShopController extends Controller
 {
@@ -77,7 +81,6 @@ class ShopController extends Controller
         ->select('users.*', 'shops.*')
         ->where('shops.id', '=', $id)
         ->get();
-
         return view('superadmin.shop.edit', compact('usersAndShops', 'id'));
     }
 
@@ -91,19 +94,24 @@ class ShopController extends Controller
     public function update(Request $request, Shops $shops, User $user, $id)
     {
         $shops = Shops::findOrFail($id);
-        $shops->update([
+        $updated = $shops->update([
             'shop_name' => $request->input('shop_name'),
             'status' => $request->input('status'),
             'address' => $request->input('address'),
         ]);
-    
+     
         $user = User::findOrFail($request->users_id);
         $user->update([
             'email' => $request->input('email'),
             'name' => $request->input('name'),
             'active' => $request->input('status'),
         ]);
-    
+
+        if($updated == true){
+            Notification::route('mail', $request->input('email'))
+            ->notify(new ShopApproved($request->input('status')));
+        }
+
         return redirect()->back()->with('message', 'Shops Updated successfully.');
     }
 
@@ -201,5 +209,16 @@ class ShopController extends Controller
         
         // dd($vehicle_lists->toArray());
         return view('user.shop.view', compact('usersAndShops', 'vehicle_lists', 'user'));
+    }
+
+    public function changeLogo(Request $request, Shops $shop) {
+        $shop->update([
+            'logo' => $request->logo->getClientOriginalName()
+        ]);
+
+        $fileNameImage = $request->logo->getClientOriginalName();
+        $filePathImage = 'storage/images/' . $fileNameImage;
+        $request->logo->move(public_path('storage/images/'), $fileNameImage);
+        return redirect()->back()->with('updateImg', 'Your Logo Image Update Successfully');
     }
 }

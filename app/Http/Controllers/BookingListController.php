@@ -36,7 +36,7 @@ class BookingListController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->toArray());
+        // dd($request->toArray());
         // $userId = auth()->id();
         // $usersAndShops = DB::table('users')
         //                 ->join('shops', 'users.id', '=', 'shops.users_id')
@@ -66,7 +66,6 @@ class BookingListController extends Controller
         $booking_lists->save();
 
         $booked_service = new BookedServce();
-
 
         return redirect()->back()->with('message', 'Booked Successfully.');
     }

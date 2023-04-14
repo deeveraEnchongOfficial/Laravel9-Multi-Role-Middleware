@@ -7,6 +7,7 @@ use App\Http\Controllers\ServiceListController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\VehicleListController;
 use App\Http\Controllers\BookingListController;
+use App\Http\Controllers\UserProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,6 +70,14 @@ Route::middleware(['auth','user-role:admin'])->group(function()
     Route::get("/admin/home",[HomeController::class,'adminHome'])->name('home.admin');
     Route::get("/admin/shops" , [ShopController::class,'myShop'])->name('shops.myShop');
     Route::put("/admin/shops/{shop}" , [ShopController::class,'myShopUpdate'])->name('shops.myShopUpdate');
+    Route::put("/admin/shops/changeLogo/{shop}" , [ShopController::class,'changeLogo'])->name('shops.changeLogo');
     Route::resource("/admin/services" , ServiceController::class);
     // Route::resource("/service" , ServiceController::class);
+});
+
+//Profile All Route
+Route::middleware(['auth'])->group(function(){
+    Route::get("/changeProfile" , [UserProfileController::class, 'changeProfile' ])->name('user.profile');
+    Route::put("/changeImage/{user}" , [UserProfileController::class, 'profileImage' ])->name('user.changeProfileImage');
+    Route::put("/updateProfile/{user}" , [UserProfileController::class, 'updateProfile' ])->name('user.updateProfile');
 });

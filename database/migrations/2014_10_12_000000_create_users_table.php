@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->tinyInteger('active')->default(0);
             $table->string('name');
+            $table->string('profile_image')->default('default.png');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

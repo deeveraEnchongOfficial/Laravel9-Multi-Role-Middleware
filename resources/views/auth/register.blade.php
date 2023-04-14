@@ -218,6 +218,11 @@
                                         </span>
                                     @enderror
                                 </div>
+                                @if(session('success'))
+                                <div class="alert alert-success mt-2">
+                                    {{ session('success') }}
+                                </div>
+                                @endif
                                 <div class="row">
                                     <!-- /.col -->
                                     <div class="col-4">

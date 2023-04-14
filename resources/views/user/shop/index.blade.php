@@ -37,7 +37,7 @@
                     <a href="{{ route('shops.userShopView', $userAndShop->id) }}" class="card-link">
                     <div class="card card-widget widget-user">
                       <!-- Add the bg color to the header using any of the bg-* classes -->
-                      <div class="widget-user-header text-white" style="background: url('{{asset('admin-assets/dist/img/photo1.png')}}') center center;">
+                      <div class="widget-user-header text-white" style="background: url('{{asset("storage/images/$userAndShop->logo")}}') center center;">
                         <h3 class="widget-user-username text-right">{{ $userAndShop->shop_name}}</h3>
                         <h5 class="widget-user-desc text-right"><i class="fa fa-map-marker" aria-hidden="true"></i> {{ $userAndShop->address}}</h5>
                       </div>

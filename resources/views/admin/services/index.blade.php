@@ -407,7 +407,7 @@
                                                                 <div class="col-md-12">
                                                                     <div class="form-group">
                                                                         <label>Price</label>
-                                                                        <input id="price" type="text"
+                                                                        <input id="price" type="number"
                                                                             name="price" class="form-control"
                                                                             value="{{ $row->price }}"
                                                                             style="width: 100%;" required>
@@ -537,7 +537,7 @@
                                                                 <div class="col-md-12">
                                                                     <div class="form-group">
                                                                         <label>Price</label>
-                                                                        <input id="price" type="text"
+                                                                        <input id="price" type="number"
                                                                             name="price" class="form-control"
                                                                             value="{{ old('price') }}"
                                                                             style="width: 100%;" required>

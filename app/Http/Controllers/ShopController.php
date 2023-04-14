@@ -181,7 +181,7 @@ class ShopController extends Controller
 
     public function userShopView($id)
     {
-        // $user = auth()->user();
+        $user = auth()->user();
         $userId = auth()->id();
         $usersAndShops = DB::table('users')
                         ->join('shops', 'users.id', '=', 'shops.users_id')
@@ -200,6 +200,6 @@ class ShopController extends Controller
         $vehicle_lists = VehicleList::all();
         
         // dd($vehicle_lists->toArray());
-        return view('user.shop.view', compact('usersAndShops', 'vehicle_lists'));
+        return view('user.shop.view', compact('usersAndShops', 'vehicle_lists', 'user'));
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ServiceListController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\VehicleListController;
+use App\Http\Controllers\BookingListController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +51,7 @@ Route::middleware(['auth','user-role:user'])->group(function()
     Route::get("/shops/{shop}" , [ShopController::class,'userShopView'])->name('shops.userShopView');
     Route::get('/getServices', [ServiceController::class, 'getServices'])->name('getServices');
     Route::post('/processServices', [ServiceController::class, 'processServices'])->name('processServices');
+    Route::resource('/bookingList', BookingListController::class);
 });
 
 // superadmin Route

@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\BookingList;
 use App\Models\BookedServce;
+use App\Models\Service;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BookingListController extends Controller
 {
@@ -15,7 +17,7 @@ class BookingListController extends Controller
      */
     public function index()
     {
-        //
+        return view('user.bookedList.index');
     }
 
     /**
@@ -36,37 +38,31 @@ class BookingListController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->toArray());
-        // $userId = auth()->id();
-        // $usersAndShops = DB::table('users')
-        //                 ->join('shops', 'users.id', '=', 'shops.users_id')
-        //                 ->select('shops.id')
-        //                 ->where('users.id', '=', $userId)
-        //                 ->get();
-        //  dd($usersAndShops[0]->id);               
-        // $data = $request->all();
-        // $data['shop_id'] = $usersAndShops[0]->id; // Set the default value for vehicle_type
-        // $service = Service::create($data);
-        // dd($request->toArray());
-        // $service = Service::create($request->all());
-
-        // $example = new ExampleModel();
-        // $example->name = $request->input('name');
-        // $example->description = $request->input('description');
-        // $example->save();
-
-        $booking_lists = new BookingList();
-        $booking_lists->shop_id = $request->input('shop_id');
-        $booking_lists->vehicle_lists_id = $request->input('vehicle_list');
-        $booking_lists->client_name = $request->input('name');
-        $booking_lists->email = $request->input('email');
-        $booking_lists->address = $request->input('address');
-        $booking_lists->schedule_date = $request->input('date');
-        $booking_lists->total_amount = $request->input('total_price');
-        $booking_lists->save();
-
-        $booked_service = new BookedServce();
-
+        $services = Service::whereIn('id', $request->services)->get();
+        $userId = auth()->id();
+    
+        $bookingList = new BookingList();
+        $bookingList->shop_id = $request->input('shop_id');
+        $bookingList->vehicle_lists_id = $request->input('vehicle_list');
+        $bookingList->client_name = $request->input('name');
+        $bookingList->email = $request->input('email');
+        $bookingList->address = $request->input('address');
+        $bookingList->schedule_date = $request->input('date');
+        $bookingList->total_amount = $request->input('total_price');
+        $bookingList->save();
+    
+        foreach ($services as $service) {
+            $bookedService = new BookedServce();
+            $bookedService->booking_lists_id = $bookingList->id;
+            $bookedService->services_id = $service->id;
+            $bookedService->vehicle_lists_id = $request->input('vehicle_list');
+            $bookedService->user_id = $userId;
+            $bookedService->service_name = $service->service; // Get service name
+            $bookedService->service_amount = $service->price; // Get service price
+            $bookedService->status = 1; // replace with the actual description
+            $bookedService->save();
+        }
+    
         return redirect()->back()->with('message', 'Booked Successfully.');
     }
 

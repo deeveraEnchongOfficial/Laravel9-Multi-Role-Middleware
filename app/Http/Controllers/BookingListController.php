@@ -7,6 +7,7 @@ use App\Models\BookedServce;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class BookingListController extends Controller
 {
@@ -17,7 +18,27 @@ class BookingListController extends Controller
      */
     public function index()
     {
-        return view('user.bookedList.index');
+        $userId = auth()->id();
+        $userEmail = Auth::user()->email;
+        // dd( $user);
+        // $bookedList = DB::table('booking_lists')
+        // ->join('booked_servces', 'booking_lists.id', '=', 'booked_servces.booking_lists_id')
+        // ->select('booking_lists.*', 'booked_servces.*')
+        // ->where('booked_servces.user_id', '=', $userId)
+        // ->get();
+
+        $bookedList = DB::table('booking_lists')
+        ->select('booking_lists.*')
+        ->where('email', '=', $userEmail)
+        ->get();
+
+        // dd($bookedList);
+
+        $bookedListJson = $bookedList->toJson();
+
+        // dd($bookedList->toArray());
+
+        return view('user.bookedList.index', compact('bookedListJson'));
     }
 
     /**

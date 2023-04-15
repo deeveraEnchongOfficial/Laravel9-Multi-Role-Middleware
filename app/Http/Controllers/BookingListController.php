@@ -29,6 +29,7 @@ class BookingListController extends Controller
 
         $bookedList = DB::table('booking_lists')
         ->select('booking_lists.*')
+        ->where('status', '=', 1)
         ->where('email', '=', $userEmail)
         ->get();
 
@@ -39,6 +40,32 @@ class BookingListController extends Controller
         // dd($bookedList->toArray());
 
         return view('user.bookedList.index', compact('bookedListJson'));
+    }
+
+    public function bookingList()
+    {
+        $userId = auth()->id();
+        $userEmail = Auth::user()->email;
+        // dd( $user);
+        // $bookedList = DB::table('booking_lists')
+        // ->join('booked_servces', 'booking_lists.id', '=', 'booked_servces.booking_lists_id')
+        // ->select('booking_lists.*', 'booked_servces.*')
+        // ->where('booked_servces.user_id', '=', $userId)
+        // ->get();
+
+        $bookedList = DB::table('booking_lists')
+        ->select('booking_lists.*')
+        ->where('email', '=', $userEmail)
+        ->where('status', '=', 1)
+        ->get();
+
+        // dd($bookedList);
+
+        $bookedListJson = $bookedList->toJson();
+
+        // dd($bookedList->toArray());
+
+        return view('admin.bookedList.index', compact('bookedListJson'));
     }
 
     /**

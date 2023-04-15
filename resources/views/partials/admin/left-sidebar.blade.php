@@ -62,6 +62,13 @@
                         <p>Services</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('bookingList') }}" class="nav-link {{ Route::current()->getName() == "bookingList.index" ? 'active' : '' }}">
+                        <i class="far fa-circle nav-icon"></i>
+                        {{-- {{ Route::current()->getName() }} --}}
+                        <p>Bookings</p>
+                    </a>
+                </li>
               </ul>
           </nav>
           <!-- /.sidebar-menu -->

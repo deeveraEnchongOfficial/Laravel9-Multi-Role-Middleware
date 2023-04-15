@@ -72,6 +72,7 @@ Route::middleware(['auth','user-role:admin'])->group(function()
     Route::put("/admin/shops/{shop}" , [ShopController::class,'myShopUpdate'])->name('shops.myShopUpdate');
     Route::put("/admin/shops/changeLogo/{shop}" , [ShopController::class,'changeLogo'])->name('shops.changeLogo');
     Route::resource("/admin/services" , ServiceController::class);
+    Route::get("/admin/bookingList" , [BookingListController::class,'bookingList'])->name('bookingList');
     // Route::resource("/service" , ServiceController::class);
 });
 

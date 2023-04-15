@@ -30,6 +30,11 @@ return new class extends Migration
                             ->references('id')
                             ->on('vehicle_lists')
                             ->onDelete('cascade');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')
+                            ->references('id')
+                            ->on('users')
+                            ->onDelete('cascade');
             $table->string('service_name');
             $table->string('service_amount');
             $table->string('status')->default(1);

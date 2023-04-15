@@ -14,6 +14,7 @@ class BookedServce extends Model
         'booking_lists_id',
         'services_id',
         'vehicle_lists_id',
+        'user_id',
         'service_name',
         'service_amount',
         'status',
